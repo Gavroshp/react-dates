@@ -580,7 +580,6 @@ export default class DayPickerSingleDateController extends React.Component {
 
     const dayPickerComponent = (
       <DayPicker
-        isOutsideRange={() => false}
         isYearsEnabled={isYearsEnabled}
         orientation={orientation}
         enableOutsideDays={enableOutsideDays}
