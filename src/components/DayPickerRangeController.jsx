@@ -175,6 +175,7 @@ export default class DayPickerRangeController extends React.Component {
     this.onYearChange = this.onYearChange.bind(this);
     this.onMultiplyScrollableMonths = this.onMultiplyScrollableMonths.bind(this);
     this.getFirstFocusableDay = this.getFirstFocusableDay.bind(this);
+    this.setDayPickerRef = this.setDayPickerRef.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -220,11 +221,10 @@ export default class DayPickerRangeController extends React.Component {
     const didFocusChange = focusedInput !== this.props.focusedInput;
 
     if (
+      numberOfMonths !== this.props.numberOfMonths ||
+      enableOutsideDays !== this.props.enableOutsideDays ||
       (
-        initialVisibleMonth !== this.props.initialVisibleMonth ||
-        numberOfMonths !== this.props.numberOfMonths ||
-        enableOutsideDays !== this.props.enableOutsideDays
-      ) && (
+        initialVisibleMonth !== this.props.initialVisibleMonth &&
         !this.props.focusedInput &&
         didFocusChange
       )
@@ -652,6 +652,10 @@ export default class DayPickerRangeController extends React.Component {
     return { currentMonth, visibleDays };
   }
 
+  setDayPickerRef(ref) {
+    this.dayPicker = ref;
+  }
+
   addModifier(updatedDays, day, modifier) {
     const { numberOfMonths: numberOfVisibleMonths, enableOutsideDays, orientation } = this.props;
     const { currentMonth: firstVisibleMonth, visibleDays } = this.state;
@@ -873,7 +877,7 @@ export default class DayPickerRangeController extends React.Component {
 
     return (
       <DayPicker
-        ref={(ref) => { this.dayPicker = ref; }}
+        ref={this.setDayPickerRef}
         orientation={orientation}
         enableOutsideDays={enableOutsideDays}
         modifiers={visibleDays}

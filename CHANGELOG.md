@@ -1,5 +1,14 @@
 # Change Log
 
+## 12.5.1
+- [fix] Ensure `this.childNode` exists in the `OutsideClickHandler` ([e330839](https://github.com/airbnb/react-dates/commit/e3308395212bef07d1f3c05f413cac3dd245ac98))
+- [fix] Remove `minimumNights` prop from the `DayPickerSingleDateController` ([#686](https://github.com/airbnb/react-dates/pull/686))
+
+## 12.5.0
+- [fix] Fix `onOutsideClick` prop functionality in the SDP ([#666](https://github.com/airbnb/react-dates/pull/666))
+- [new] Add `inputIconPosition` prop ([#627](https://github.com/airbnb/react-dates/pull/627))
+- [fix] Adjust DayPicker styles when portal status is set ([#659](https://github.com/airbnb/react-dates/pull/659))
+
 ## 12.4.0
 - [fix] Pass `onPrevMonthClick`/`onNextMonthClick` props through the SDP ([#657](https://github.com/airbnb/react-dates/pull/657))
 - [fix] Recalculate modifiers when prop modifiers change ([#668](https://github.com/airbnb/react-dates/pull/668))

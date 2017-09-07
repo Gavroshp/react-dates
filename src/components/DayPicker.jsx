@@ -230,6 +230,9 @@ export default class DayPicker extends React.Component {
 
     this.openKeyboardShortcutsPanel = this.openKeyboardShortcutsPanel.bind(this);
     this.closeKeyboardShortcutsPanel = this.closeKeyboardShortcutsPanel.bind(this);
+
+    this.setContainerRef = this.setContainerRef.bind(this);
+    this.setTransitionContainerRef = this.setTransitionContainerRef.bind(this);
   }
 
   componentDidMount() {
@@ -292,8 +295,13 @@ export default class DayPicker extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { numberOfMonths } = this.props;
     const { monthTransition, currentMonth, focusedDate } = this.state;
-    if (monthTransition || !currentMonth.isSame(prevState.currentMonth)) {
+    if (
+      monthTransition ||
+      !currentMonth.isSame(prevState.currentMonth) ||
+      numberOfMonths !== prevProps.numberOfMonths
+    ) {
       if (this.isHorizontal()) {
         this.adjustDayPickerHeight();
       }
@@ -491,6 +499,14 @@ export default class DayPicker extends React.Component {
     this.calendarMonthGrid = ref;
   }
 
+  setContainerRef(ref) {
+    this.container = ref;
+  }
+
+  setTransitionContainerRef(ref) {
+    this.transitionContainer = ref;
+  }
+
   maybeTransitionNextMonth(newFocusedDate) {
     const { numberOfMonths } = this.props;
     const { currentMonth, focusedDate } = this.state;
@@ -571,34 +587,15 @@ export default class DayPicker extends React.Component {
       withMouseInteractions,
     } = this.state;
 
-
     if (!monthTransition) return;
 
-
     const newMonth = currentMonth.clone();
-
-    switch (monthTransition) {
-      case PREV_TRANSITION: {
-        if (onPrevMonthClick) onPrevMonthClick();
-        newMonth.subtract(1, 'month');
-        break;
-      }
-      case NEXT_TRANSITION: {
-        if (onNextMonthClick) onNextMonthClick();
-        newMonth.add(1, 'month');
-        break;
-      }
-      case MONTH_SELECTION_TRANSITION: {
-        if (onMonthChange) onMonthChange(newMonth);
-        break;
-      }
-      case YEAR_SELECTION_TRANSITION: {
-        if (onYearChange) onYearChange(newMonth);
-        break;
-      }
-      default: {
-        break;
-      }
+    if (monthTransition === PREV_TRANSITION) {
+      if (onPrevMonthClick) onPrevMonthClick();
+      newMonth.subtract(1, 'month');
+    } else if (monthTransition === NEXT_TRANSITION) {
+      if (onNextMonthClick) onNextMonthClick();
+      newMonth.add(1, 'month');
     }
 
     let newFocusedDate = null;
@@ -877,18 +874,18 @@ export default class DayPicker extends React.Component {
 
           <div // eslint-disable-line jsx-a11y/no-noninteractive-element-interactions
             className="DayPicker__focus-region"
-            ref={(ref) => { this.container = ref; }}
+            ref={this.setContainerRef}
             onClick={(e) => { e.stopPropagation(); }}
             onKeyDown={throttle(this.onKeyDown, 300)}
             onMouseUp={() => { this.setState({ withMouseInteractions: true }); }}
             role="region"
             tabIndex={-1}
           >
-            {!verticalScrollable && !isYearsEnabled && this.renderNavigation()}
+            {!verticalScrollable && this.renderNavigation()}
 
             <div
               className={transitionContainerClasses}
-              ref={(ref) => { this.transitionContainer = ref; }}
+              ref={this.setTransitionContainerRef}
               style={transitionContainerStyle}
             >
               <CalendarMonthGrid
@@ -917,7 +914,7 @@ export default class DayPicker extends React.Component {
                 focusedDate={focusedDate}
                 phrases={phrases}
               />
-              {verticalScrollable && !isYearsEnabled && this.renderNavigation()}
+              {verticalScrollable && this.renderNavigation()}
             </div>
 
             {!isTouch && !hideKeyboardShortcutsPanel &&

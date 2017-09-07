@@ -39,7 +39,6 @@ const propTypes = forbidExtraProps({
   onClose: PropTypes.func,
 
   keepOpenOnDateSelect: PropTypes.bool,
-  minimumNights: PropTypes.number,
   isOutsideRange: PropTypes.func,
   isDayBlocked: PropTypes.func,
   isDayHighlighted: PropTypes.func,
@@ -85,7 +84,6 @@ const defaultProps = {
   onClose() {},
 
   keepOpenOnDateSelect: false,
-  minimumNights: 1,
   isOutsideRange() {},
   isDayBlocked() {},
   isDayHighlighted() {},
@@ -199,9 +197,13 @@ export default class DayPickerSingleDateController extends React.Component {
       recomputeOutsideRange || recomputeDayBlocked || recomputeDayHighlighted;
 
     if (
-      initialVisibleMonth !== this.props.initialVisibleMonth ||
       numberOfMonths !== this.props.numberOfMonths ||
-      enableOutsideDays !== this.props.enableOutsideDays
+      enableOutsideDays !== this.props.enableOutsideDays ||
+      (
+        initialVisibleMonth !== this.props.initialVisibleMonth &&
+        !this.props.focused &&
+        focused
+      )
     ) {
       const newMonthState = this.getStateForNewMonth(nextProps);
       const currentMonth = newMonthState.currentMonth;
@@ -568,7 +570,6 @@ export default class DayPickerSingleDateController extends React.Component {
       phrases,
       onOutsideClick,
       onBlur,
-      minimumNights,
       showKeyboardShortcuts,
     } = this.props;
 
@@ -602,7 +603,6 @@ export default class DayPickerSingleDateController extends React.Component {
         phrases={phrases}
         daySize={daySize}
         isRTL={isRTL}
-        minimumNights={minimumNights}
         showKeyboardShortcuts={showKeyboardShortcuts}
       />
     );
