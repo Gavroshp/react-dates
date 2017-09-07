@@ -73,6 +73,8 @@ const propTypes = forbidExtraProps({
   phrases: PropTypes.shape(getPhrasePropTypes(DayPickerPhrases)),
 
   isRTL: PropTypes.bool,
+
+  isYearsEnabled: PropTypes.bool,
 });
 
 const defaultProps = {
@@ -571,12 +573,15 @@ export default class DayPickerSingleDateController extends React.Component {
       onOutsideClick,
       onBlur,
       showKeyboardShortcuts,
+      isYearsEnabled,
     } = this.props;
 
     const { currentMonth, visibleDays } = this.state;
 
     const dayPickerComponent = (
       <DayPicker
+        isOutsideRange={() => false}
+        isYearsEnabled={isYearsEnabled}
         orientation={orientation}
         enableOutsideDays={enableOutsideDays}
         modifiers={visibleDays}

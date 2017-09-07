@@ -338,6 +338,7 @@ export default class SingleDatePicker extends React.Component {
       isOutsideRange,
       isDayBlocked,
       isDayHighlighted,
+      isYearsEnabled,
     } = this.props;
     const { dayPickerContainerStyles, isDayPickerFocused } = this.state;
 
@@ -352,6 +353,7 @@ export default class SingleDatePicker extends React.Component {
         onClick={onOutsideClick}
       >
         <DayPickerSingleDateController
+          isYearsEnabled={isYearsEnabled}
           date={date}
           onDateChange={onDateChange}
           onFocusChange={onFocusChange}

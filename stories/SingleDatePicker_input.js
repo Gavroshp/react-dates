@@ -18,6 +18,14 @@ const TestCustomInputIcon = () => (
 );
 
 storiesOf('SDP - Input Props', module)
+  .addWithInfo('single month with years enabled', () => (
+    <SingleDatePickerWrapper
+      isOutsideRange={() => false}
+      initialDate={moment().add(3, 'days')}
+      numberOfMonths={1}
+      isYearsEnabled
+    />
+  ))
   .addWithInfo('default', () => (
     <SingleDatePickerWrapper
       initialDate={moment().add(3, 'days')}
