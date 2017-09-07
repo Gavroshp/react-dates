@@ -104,6 +104,7 @@ export default class CalendarMonthGrid extends React.Component {
     super(props);
     const withoutTransitionMonths = props.orientation === VERTICAL_SCROLLABLE;
     this.state = {
+      initialMonth: props.initialMonth,
       months: getMonths(props.initialMonth, props.numberOfMonths, withoutTransitionMonths),
     };
 
@@ -126,28 +127,36 @@ export default class CalendarMonthGrid extends React.Component {
     const { initialMonth, numberOfMonths, orientation } = nextProps;
     const { months } = this.state;
 
-    const hasMonthChanged = !this.props.initialMonth.isSame(initialMonth, 'month');
+    const hasMonthChanged = !this.state.initialMonth.isSame(initialMonth, 'month');
     const hasNumberOfMonthsChanged = this.props.numberOfMonths !== numberOfMonths;
     let newMonths = months;
 
     if (hasMonthChanged && !hasNumberOfMonthsChanged) {
-      if (isAfterDay(initialMonth, this.props.initialMonth)) {
-        newMonths = months.slice(1);
-        newMonths.push(months[months.length - 1].clone().add(1, 'month'));
-      } else {
-        newMonths = months.slice(0, months.length - 1);
-        newMonths.unshift(months[0].clone().subtract(1, 'month'));
-      }
-    }
+        // if (isAfterDay(initialMonth, this.state.initialMonth)) {
+            if (isNextMonth(this.state.initialMonth, initialMonth)) {
+                newMonths = months.slice(1);
+                newMonths.push(months[months.length - 1].clone().add(1, 'month'));
+            } else {
+                if (isPrevMonth(this.state.initialMonth, initialMonth)) {
+                    newMonths = months.slice(0, months.length - 1);
+                    newMonths.unshift(months[0].clone().subtract(1, 'month'));
+                } else {
+                    const withoutTransitionMonths = orientation === VERTICAL_SCROLLABLE;
+                    newMonths = getMonths(initialMonth, numberOfMonths, withoutTransitionMonths);
+                }
+            }
+        // }
 
-    if (hasNumberOfMonthsChanged) {
-      const withoutTransitionMonths = orientation === VERTICAL_SCROLLABLE;
-      newMonths = getMonths(initialMonth, numberOfMonths, withoutTransitionMonths);
-    }
+        if (hasNumberOfMonthsChanged) {
+            const withoutTransitionMonths = orientation === VERTICAL_SCROLLABLE;
+            newMonths = getMonths(initialMonth, numberOfMonths, withoutTransitionMonths);
+        }
 
-    this.setState({
-      months: newMonths,
-    });
+        this.setState({
+            months: newMonths,
+            initialMonth,
+        });
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
