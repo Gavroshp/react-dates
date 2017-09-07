@@ -56,7 +56,6 @@ const propTypes = forbidExtraProps({
   // i18n
   monthFormat: PropTypes.string,
   phrases: PropTypes.shape(getPhrasePropTypes(CalendarDayPhrases)),
-  isYearsEnabled: PropTypes.bool,
 });
 
 const defaultProps = {

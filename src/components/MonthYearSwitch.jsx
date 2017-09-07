@@ -38,22 +38,22 @@ export default class MonthSelector extends React.Component {
     return (
       <div className="MonthYearSwitch">
         <div className="Month">
-          <button onClick={() => onSelectMonth(date, date.get('month') - 1)}>
+          <button type="button" onClick={() => onSelectMonth(date, date.get('month') - 1)}>
             <LeftArrow />
           </button>
-          <button onClick={() => onSelectMonth(date, date.get('month') + 1)}>
+          <button type="button" onClick={() => onSelectMonth(date, date.get('month') + 1)}>
             <RightArrow />
           </button>
           <span className="Month--title">{currentMonth}</span>
         </div>
         <div className="Year">
-          <span className="Year--title">{currentYear}</span>
-          <button onClick={() => onSelectYear(date, date.get('year') - 1)}>
+          <button type="button" onClick={() => onSelectYear(date, date.get('year') - 1)}>
             <LeftArrow />
           </button>
-          <button onClick={() => onSelectYear(date, date.get('year') + 1)}>
+          <button type="button" onClick={() => onSelectYear(date, date.get('year') + 1)}>
             <RightArrow />
           </button>
+          <span className="Year--title">{currentYear}</span>
         </div>
       </div>
     );

@@ -881,7 +881,7 @@ export default class DayPicker extends React.Component {
             role="region"
             tabIndex={-1}
           >
-            {!verticalScrollable && this.renderNavigation()}
+            {!verticalScrollable && !isYearsEnabled && this.renderNavigation()}
 
             <div
               className={transitionContainerClasses}
